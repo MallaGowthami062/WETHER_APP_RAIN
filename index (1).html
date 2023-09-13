@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - by johnny sins</title>
+    <link rel="icon" type="image/x-icon" href="/Images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+    <!-- Main Container for the weather web app -->
+    <div class="weatherContainer">
+      <div id="location-details">
+        <button id="get-location">get-location</button>
+      </div> 
+        <h2 class="appHeading"> Weather App </h2>
+        <!-- Input Divition for city name -->
+        <div class="search">
+            <form action="" id="weatherForm">
+                <input type="text" name="" id="weatherInput"
+                list="cities" placeholder="Enter your city here...">
+                <datalist id="cities">
+                    <option value="mumbai">
+                    <option value="delhi">
+                    <option value="Bangalore">
+                    <option value="kolkata">
+                    <option value="Chennai">
+                    <option value="Ahmedabad">
+                    <option value="Hyderbad">
+                    <option value="pune">
+                    <option value="surat">
+                    <option value="Kanput">
+                    <option value="jaipur">
+                    <option value="lunknow">
+                    <option value="tirupati">
+                    <option value="vizag">
+                    <option value="visakhapatnam">
+                    <option value="vijaywada">
+                    <option value="kurnool">
+                    <option value="kakinada">
+                    <option value="anantapur">
+                    <option value="srisailam">
+                    <option value="vizinagaram">
+                    <option value="agra">   
+                      <option value="italy">
+                        <option value="devarapalli">
+                        <option value="anakapalle">
+                        <option value="london">
+                        <option value="srikakulam">
+                        <option value="rajam">
+                        <option value="pendurthi">
+                        <option value="kothavalasa">
+                        <option value="thirchi">
+                        <option value="guntur">
+                        <option value="thirupathi">
+                        <option value="england">
+                        <option value="canada">
+                        <option value="goa">
+                          <option value="aruku">
+                            <option value="s-kota">
+                            <option value="kadapa">
+                            <option value="America">
+                            <option value="chandigarh">
+                            <option value="gujarat">
+                            <option value="punjab">
+                            <option value="Manyam">
+                            <option value="secundrabad">
+                            <option value="arunachal pradesh">
+                            <option value="parvathipuram">
+                            <option value="paderu">
+                            <option value="odisha">
+                            <option value="bhuvaneswar">                                 
+                  </datalist>
+                <button class="searchBtn" type="submit">
+                    <ul>
+                        <li><i class="fa-solid fa-magnifying-glass"></i></li>
+                    </ul>
+                </button>
+            </form>
+           
+        </div>
+        <!-- Outut Will show on the screen -->
+        <h2 id="city"></h2>
+        <img src="" alt="" id="weatherImage">
+        <p class="weatherMain" id="weatherMain"></p>
+        <h2 id="temp"><span class="temp"></span></h2>
+        <div class="todayDates"></div>
+        <div id="todayTime"></div>
+    </div>
+</body>
+<script src="script.js"></script>
+<script>
+    let locationButton = document.getElementById("get-location");
+let locationDiv = document.getElementById("location-details");
+
+locationButton.addEventListener("click", () => {
+  //Geolocation APU is used to get geographical position of a user and is available inside the navigator object
+  if (navigator.geolocation) {
+    //returns position(latitude and longitude) or error
+    navigator.geolocation.getCurrentPosition(showLocation, checkError);
+  } else {
+    //For old browser i.e IE
+    locationDiv.innerText = "The browser does not support geolocation";
+  }
+});
+
+//Error Checks
+const checkError = (error) => {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      locationDiv.innerText = "Please allow access to location";
+      break;
+    case error.POSITION_UNAVAILABLE:
+      //usually fired for firefox
+      locationDiv.innerText = "Location Information unavailable";
+      break;
+    case error.TIMEOUT:
+      locationDiv.innerText = "The request to get user location timed out";
+  }
+};
+
+const showLocation = async (position) => {
+  //We user the NOminatim API for getting actual addres from latitude and longitude
+  let response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+  );
+  //store response object
+  let data = await response.json();
+  locationDiv.innerText = `${data.address.city}, ${data.address.country}`;
+};
+</script>
+
+</html>
